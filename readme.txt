@@ -1,0 +1,1 @@
+dotnet ef dbcontext scaffold "Server=tcp:oskatestserver.database.windows.net,1433;Initial Catalog=TestDatabase;Persist Security Info=False;User ID=CloudSA568ac3f7;Password=Kilpikonna123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" Microsoft.EntityFrameworkCore.SqlServer -o Models
