@@ -1,48 +1,58 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<FreeAzureSqlContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("FreeAzureSqlContext") ?? throw new InvalidOperationException("Connection string 'FreeAzureSqlContext' not found.")));
+using Microsoft.Extensions.Hosting;
+using System;
+using System.Linq;
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+namespace webAPI.Models
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
 
-app.UseHttpsRedirection();
+            // Add configuration settings
+            builder.Configuration.AddJsonFile("appsettings.json");
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+            // Register your database context
+            builder.Services.AddDbContext<TestDatabaseContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("TestDatabaseContext")
+                    ?? throw new InvalidOperationException("Connection string 'TestDatabaseContext' not found.")));
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+            var app = builder.Build();
 
-app.Run();
+            // Configure the HTTP request pipeline
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
+            }
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+            // Redirect HTTP requests to HTTPS
+            app.UseHttpsRedirection();
+
+            // Endpoint configuration
+            app.Map("/testitaulu", app =>
+            {
+                app.Run(async context =>
+                {
+                    // Your logic for handling requests to /testitaulu
+                    await context.Response.WriteAsync("Handling /testitaulu requests...");
+                });
+            });
+
+            app.Run();
+        }
+    }
+
+    // Your database context class here (e.g., TestDatabaseContext)
+    // and other classes related to your application
 }
