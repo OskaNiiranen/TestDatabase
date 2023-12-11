@@ -1,18 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace webAPI.Models;
-
-/// <summary>
-/// testitaulu
-/// </summary>
-public partial class Testitaulu
+namespace webAPI.Models
 {
-    public int? PersonId { get; set; }
+    /// <summary>
+    /// testitaulu
+    /// </summary>
+    public partial class Testitaulu
+    {
+        [Key]
+        public int TestitauluId { get; set; } // Assuming this is your primary key
 
-    public string? Etunimi { get; set; }
-
-    public string? Sukunimi { get; set; }
-
-    public int? Age { get; set; }
+        public int? PersonId { get; set; }
+        public string? Etunimi { get; set; }
+        public string? Sukunimi { get; set; }
+        public int? Age { get; set; }
+    }
 }

@@ -1,4 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<FreeAzureSqlContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("FreeAzureSqlContext") ?? throw new InvalidOperationException("Connection string 'FreeAzureSqlContext' not found.")));
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
