@@ -11,9 +11,9 @@ namespace webAPI.Controllers
     [ApiController]
     public class TestitauluController : ControllerBase
     {
-        private readonly FreeAzureSqlContext _context;
+        private readonly TestDatabaseContext _context;
 
-        public TestitauluController(FreeAzureSqlContext context)
+        public TestitauluController(TestDatabaseContext context)
         {
             _context = context;
         }
@@ -22,14 +22,14 @@ namespace webAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Testitaulu>>> GetTestitaulu()
         {
-            return await _context.Testitaulu.ToListAsync();
+            return await _context.Testitaulus.ToListAsync();
         }
 
         // GET: api/Testitaulu/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Testitaulu>> GetTestitaulu(int id)
         {
-            var testitaulu = await _context.Testitaulu.FindAsync(id);
+            var testitaulu = await _context.Testitaulus.FindAsync(id);
 
             if (testitaulu == null)
             {
@@ -43,7 +43,7 @@ namespace webAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Testitaulu>> PostTestitaulu(Testitaulu testitaulu)
         {
-            _context.Testitaulu.Add(testitaulu);
+            _context.Testitaulus.Add(testitaulu);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetTestitaulu", new { id = testitaulu.TestitauluId }, testitaulu);
@@ -83,13 +83,13 @@ namespace webAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTestitaulu(int id)
         {
-            var testitaulu = await _context.Testitaulu.FindAsync(id);
+            var testitaulu = await _context.Testitaulus.FindAsync(id);
             if (testitaulu == null)
             {
                 return NotFound();
             }
 
-            _context.Testitaulu.Remove(testitaulu);
+            _context.Testitaulus.Remove(testitaulu);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -97,7 +97,7 @@ namespace webAPI.Controllers
 
         private bool TestitauluExists(int id)
         {
-            return _context.Testitaulu.Any(e => e.TestitauluId == id);
+            return _context.Testitaulus.Any(e => e.TestitauluId == id);
         }
     }
 }

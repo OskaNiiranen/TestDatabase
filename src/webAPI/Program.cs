@@ -22,7 +22,7 @@ namespace webAPI.Models
             builder.Services.AddDbContext<TestDatabaseContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("TestDatabaseContext")
                     ?? throw new InvalidOperationException("Connection string 'TestDatabaseContext' not found.")));
-
+            builder.Services.AddControllers();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline
@@ -48,8 +48,17 @@ namespace webAPI.Models
                     await context.Response.WriteAsync("Handling /testitaulu requests...");
                 });
             });
+                app.UseHttpsRedirection();
 
-            app.Run();
+                Console.WriteLine("Running...");
+
+                app.UseHttpsRedirection();
+
+                // app.UseAuthorization();
+
+                app.MapControllers();
+
+                app.Run();
         }
     }
 
