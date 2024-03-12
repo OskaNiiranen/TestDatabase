@@ -3,9 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace webAPI.Models
 {
-    /// <summary>
-    /// testitaulu
-    /// </summary>
     public partial class Testitaulu
     {
         [Key]
