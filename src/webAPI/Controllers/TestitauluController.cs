@@ -46,14 +46,14 @@ namespace webAPI.Controllers
             _context.Testitaulus.Add(testitaulu);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTestitaulu", new { id = testitaulu.TestitauluId }, testitaulu);
+            return CreatedAtAction("GetTestitaulu", new { id = testitaulu.PersonId }, testitaulu);
         }
 
         // PUT: api/Testitaulu/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTestitaulu(int id, Testitaulu testitaulu)
         {
-            if (id != testitaulu.TestitauluId)
+            if (id != testitaulu.PersonId)
             {
                 return BadRequest();
             }
@@ -97,7 +97,7 @@ namespace webAPI.Controllers
 
         private bool TestitauluExists(int id)
         {
-            return _context.Testitaulus.Any(e => e.TestitauluId == id);
+            return _context.Testitaulus.Any(e => e.PersonId == id);
         }
     }
 }
